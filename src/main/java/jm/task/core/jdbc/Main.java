@@ -4,10 +4,11 @@ import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.util.Util;
 
-
 public class Main {
     public static void main(String[] args) {
-        Util.getConnection();
+        // Инициализация соединения через Singleton
+        Util util = Util.getInstance();
+
         UserDao userDao = new UserDaoJDBCImpl();
 
         userDao.createUsersTable();

@@ -1,44 +1,41 @@
 package jm.task.core.jdbc.util;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Util {
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/new?serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static Util instance;
+    private static DataSource dataSource;
+    private static Connection connection;
 
-    // Приватный конструктор, чтобы предотвратить создание экземпляров
-    public Util() {
-        // Пустой конструктор
+    private Util() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/new");
+        config.setUsername("root");
+        config.setPassword("root");
+
+        dataSource = new HikariDataSource(config);
     }
 
-    // Получение соединения с базой данных
-    public static Connection getConnection() {
-        Connection connection = null;
-        try {
-            Class.forName(DRIVER);
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Успешное подключение к базе данных");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Не найден класс драйвера: " + e.getMessage());
-        } catch (SQLException e) {
-            System.out.println("Ошибка при подключении к базе данных: " + e.getMessage());
-        }
-        return connection;
-    }
-
-    // Закрытие соединения
-    public static void closeConnection(Connection connection) {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("Соединение закрыто");
-            } catch (SQLException e) {
-                System.out.println("Ошибка при закрытии соединения: " + e.getMessage());
+    public static Util getInstance() {
+        if (instance == null) {
+            synchronized (Util.class) {
+                if (instance == null) {
+                    instance = new Util();
+                }
             }
         }
+        return instance;
+    }
+
+    public static Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = dataSource.getConnection();
+        }
+        return connection;
     }
 }

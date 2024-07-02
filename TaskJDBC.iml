@@ -31,5 +31,8 @@
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.36" level="project" /> <!-- Добавлен slf4j-api -->
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.36" level="project" /> <!-- Добавлен slf4j-simple -->
   </component>
 </module>
